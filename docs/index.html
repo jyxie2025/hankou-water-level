@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>汉口长江水位</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #18212f;
+      --muted: #617083;
+      --line: #d9e2ec;
+      --surface: #ffffff;
+      --blue: #2563eb;
+      --green: #059669;
+      --bg: #f6f8fb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+    main {
+      width: min(1180px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 28px 0 34px;
+    }
+    header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: clamp(26px, 3vw, 38px);
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+    .subhead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(132px, 1fr));
+      gap: 10px;
+      min-width: min(100%, 470px);
+    }
+    .metric {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 11px 12px;
+    }
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+    .metric strong {
+      display: block;
+      font-size: 17px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    .chart-shell {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      min-height: 460px;
+      height: min(74vh, 780px);
+      resize: both;
+      overflow: hidden;
+      box-shadow: 0 18px 50px rgba(24, 33, 47, 0.08);
+    }
+    .range-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 0 0 12px;
+    }
+    .range-controls button,
+    .range-controls input {
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--surface);
+      color: var(--ink);
+      font: inherit;
+      font-size: 13px;
+    }
+    .range-controls button {
+      padding: 0 12px;
+      cursor: pointer;
+    }
+    .range-controls button.active {
+      border-color: var(--blue);
+      background: #eff6ff;
+      color: var(--blue);
+      font-weight: 600;
+    }
+    .range-controls input {
+      width: 72px;
+      padding: 0 9px;
+    }
+    #chart {
+      width: 100%;
+      height: 100%;
+    }
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+    @media (max-width: 760px) {
+      main { width: min(100vw - 20px, 1180px); padding-top: 18px; }
+      header { display: block; }
+      .metrics { grid-template-columns: 1fr; margin-top: 14px; }
+      .range-controls button { flex: 1 1 auto; }
+      .chart-shell { min-height: 430px; height: 68vh; resize: vertical; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>汉口（武汉关）长江水位</h1>
+        <p class="subhead">长江航道局公开水位表，08:00 与 16:00，全部累积数据，默认近 60 天</p>
+      </div>
+      <section class="metrics" aria-label="最新数据">
+        <div class="metric"><span>最新 08:00</span><strong id="latest-morning">--</strong></div>
+        <div class="metric"><span>最新 16:00</span><strong id="latest-evening">--</strong></div>
+        <div class="metric"><span>记录数</span><strong id="record-count">--</strong></div>
+      </section>
+    </header>
+    <nav class="range-controls" aria-label="时间范围">
+      <button type="button" data-days="7">1周</button>
+      <button type="button" data-days="30">1月</button>
+      <button type="button" data-days="90">3个月</button>
+      <button type="button" data-days="180">6个月</button>
+      <button type="button" data-days="365">1年</button>
+      <button type="button" data-all="true">全部</button>
+      <input id="years-input" type="number" min="1" max="50" value="2" aria-label="自定义年数" />
+      <button type="button" id="apply-years">N年</button>
+    </nav>
+    <section class="chart-shell" aria-label="水位动态图">
+      <div id="chart"></div>
+    </section>
+    <footer>
+      <span id="generated-at"></span>
+      <span><a href="./hankou_water_levels.csv">CSV</a> · <a href="https://www.cjhdj.com.cn/hdfw/sw/">数据来源</a></span>
+    </footer>
+  </main>
+  <script type="application/json" id="water-data">{"generated_at": "2026-05-11T12:29:37+08:00", "station": "汉口（武汉关）", "default_days": 60, "records": [{"datetime": "2026-05-04T08:00:00+08:00", "date": "2026-05-04", "hour": 8, "station": "汉口（武汉关）", "water_level_m": 10.28, "change_m": -0.07, "source_title": "2026年5月4日8时水位", "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260504_478388.shtml", "source_site": "长江航道局水位"}, {"datetime": "2026-05-04T16:00:00+08:00", "date": "2026-05-04", "hour": 16, "station": "汉口（武汉关）", "water_level_m": 10.23, "change_m": -0.05, "source_title": "2026年5月4日16时水位", "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260504_478394.shtml", "source_site": "长江航道局水位"}, {"datetime": "2026-05-05T08:00:00+08:00", "date": "2026-05-05", "hour": 8, "station": "汉口（武汉关）", "water_level_m": 10.15, "change_m": -0.08, "source_title": "2026年5月5日8时水位", "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260505_478407.shtml", "source_site": "长江航道局水位"}, {"datetime": "2026-05-05T16:00:00+08:00", "date": "2026-05-05", "hour": 16, "station": "汉口（武汉关）", "water_level_m": 10.12, "change_m": -0.03, "source_title": "2026年5月5日16时水位", "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260505_478413.shtml", "source_site": "长江航道局水位"}, {"datetime": "2026-05-06T08:00:00+08:00", "date": "2026-05-06", "hour": 8, "station": "汉口（武汉关）", "water_level_m": 10.03, "change_m": -0.09, "source_title": "2026年5月6日8时水位", "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260506_478426.shtml", "source_site": "长江航道局水位"}, {"datetime": "2026-05-06T16:00:00+08:00", "date": "2026-05-06", "hour": 16, "station": "汉口（武汉关）", "water_level_m": 9.98, "change_m": -0.05, "source_title": "2026年5月6日16时水位", "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260506_478511.shtml", "source_site": "长江航道局水位"}, {"datetime": "2026-05-07T08:00:00+08:00", "date": "2026-05-07", "hour": 8, "station": "汉口（武汉关）", "water_level_m": 9.88, "change_m": -0.1, "source_title": "2026年5月7日8时水位", "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260507_478565.shtml", "source_site": "长江航道局水位"}, {"datetime": "2026-05-07T16:00:00+08:00", "date": "2026-05-07", "hour": 16, "station": "汉口（武汉关）", "water_level_m": 9.8, "change_m": -0.08, "source_title": "2026年5月7日16时水位", "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260507_478641.shtml", "source_site": "长江航道局水位"}, {"datetime": "2026-05-08T08:00:00+08:00", "date": "2026-05-08", "hour": 8, "station": "汉口（武汉关）", "water_level_m": 9.65, "change_m": -0.15, "source_title": "2026年5月8日8时水位", "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260508_478699.shtml", "source_site": "长江航道局水位"}, {"datetime": "2026-05-08T16:00:00+08:00", "date": "2026-05-08", "hour": 16, "station": "汉口（武汉关）", "water_level_m": 9.58, "change_m": -0.07, "source_title": "2026年5月8日16时水位", "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260508_478740.shtml", "source_site": "长江航道局水位"}, {"datetime": "2026-05-09T08:00:00+08:00", "date": "2026-05-09", "hour": 8, "station": "汉口（武汉关）", "water_level_m": 9.48, "change_m": -0.1, "source_title": "2026年5月9日8时水位", "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260509_478808.shtml", "source_site": "长江航道局水位"}, {"datetime": "2026-05-09T16:00:00+08:00", "date": "2026-05-09", "hour": 16, "station": "汉口（武汉关）", "water_level_m": 9.44, "change_m": -0.04, "source_title": "2026年5月9日16时水位", "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260509_478892.shtml", "source_site": "长江航道局水位"}, {"datetime": "2026-05-10T08:00:00+08:00", "date": "2026-05-10", "hour": 8, "station": "汉口（武汉关）", "water_level_m": 9.35, "change_m": -0.09, "source_title": "2026年5月10日8时水位", "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260510_478910.shtml", "source_site": "长江航道局水位"}, {"datetime": "2026-05-10T16:00:00+08:00", "date": "2026-05-10", "hour": 16, "station": "汉口（武汉关）", "water_level_m": 9.29, "change_m": -0.06, "source_title": "2026年5月10日16时水位", "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260510_478915.shtml", "source_site": "长江航道局水位"}, {"datetime": "2026-05-11T08:00:00+08:00", "date": "2026-05-11", "hour": 8, "station": "汉口（武汉关）", "water_level_m": 9.14, "change_m": -0.15, "source_title": "2026年5月11日8时水位", "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260511_478941.shtml", "source_site": "长江航道局水位"}], "all_record_count": 15}</script>
+  <script>
+    const payload = JSON.parse(document.getElementById("water-data").textContent);
+    const records = payload.records;
+    const latestTime = records.length
+      ? new Date(Math.max(...records.map((record) => new Date(record.datetime).getTime())))
+      : null;
+    const earliestTime = records.length
+      ? new Date(Math.min(...records.map((record) => new Date(record.datetime).getTime())))
+      : null;
+    const localeOptions = {
+      year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", hour12: false
+    };
+    const byHour = (hour) => records.filter((record) => record.hour === hour);
+    const formatLevel = (record) => record ? `${record.water_level_m.toFixed(2)} m` : "--";
+    const latestByHour = (hour) => byHour(hour).at(-1);
+    document.getElementById("latest-morning").textContent = formatLevel(latestByHour(8));
+    document.getElementById("latest-evening").textContent = formatLevel(latestByHour(16));
+    document.getElementById("record-count").textContent = `${records.length} / ${payload.all_record_count}`;
+    document.getElementById("generated-at").textContent =
+      `更新于 ${new Intl.DateTimeFormat("zh-CN", localeOptions).format(new Date(payload.generated_at))}`;
+
+    const setActiveButton = (button) => {
+      document.querySelectorAll(".range-controls button").forEach((item) => item.classList.remove("active"));
+      if (button) button.classList.add("active");
+    };
+
+    const setRange = (days, button = null) => {
+      if (!latestTime) return;
+      const start = new Date(latestTime.getTime() - Number(days) * 24 * 60 * 60 * 1000);
+      Plotly.relayout("chart", {
+        "xaxis.range": [start.toISOString(), latestTime.toISOString()]
+      });
+      setActiveButton(button);
+    };
+
+    const setAllRange = (button = null) => {
+      if (!latestTime || !earliestTime) return;
+      Plotly.relayout("chart", {
+        "xaxis.range": [earliestTime.toISOString(), latestTime.toISOString()]
+      });
+      setActiveButton(button);
+    };
+
+    const makeTrace = (hour, name, color) => {
+      const data = byHour(hour);
+      return {
+        x: data.map((record) => record.datetime),
+        y: data.map((record) => record.water_level_m),
+        customdata: data.map((record) => [
+          record.change_m === null ? "" : `${record.change_m >= 0 ? "+" : ""}${record.change_m.toFixed(2)} m`,
+          record.source_title,
+          record.source_url
+        ]),
+        mode: "lines+markers",
+        name,
+        line: { color, width: 2.5 },
+        marker: { size: 7, color, line: { color: "#ffffff", width: 1 } },
+        hovertemplate:
+          "%{x|%Y-%m-%d %H:%M}<br>" +
+          "水位 %{y:.2f} m<br>" +
+          "涨落 %{customdata[0]}<extra>" + name + "</extra>"
+      };
+    };
+
+    const layout = {
+      autosize: true,
+      margin: { l: 62, r: 28, t: 30, b: 54 },
+      paper_bgcolor: "#ffffff",
+      plot_bgcolor: "#ffffff",
+      hovermode: "x unified",
+      legend: { orientation: "h", y: 1.08, x: 0 },
+      xaxis: {
+        type: "date",
+        title: "",
+        gridcolor: "#edf2f7",
+        rangeslider: { visible: true, thickness: 0.08 }
+      },
+      yaxis: {
+        title: "水位 (m)",
+        gridcolor: "#edf2f7",
+        zeroline: false,
+        fixedrange: false
+      }
+    };
+
+    const config = {
+      responsive: true,
+      scrollZoom: true,
+      displaylogo: false,
+      modeBarButtonsToRemove: ["lasso2d", "select2d"]
+    };
+
+    Plotly.newPlot("chart", [
+      makeTrace(8, "08:00", "#2563eb"),
+      makeTrace(16, "16:00", "#059669")
+    ], layout, config).then(() => {
+      const defaultButton = document.querySelector(`[data-days="${payload.default_days}"]`);
+      setRange(payload.default_days || 60, defaultButton);
+    });
+
+    document.querySelectorAll("[data-days]").forEach((button) => {
+      button.addEventListener("click", () => setRange(Number(button.dataset.days), button));
+    });
+    document.querySelector("[data-all]").addEventListener("click", (event) => setAllRange(event.currentTarget));
+    document.getElementById("apply-years").addEventListener("click", (event) => {
+      const years = Math.max(1, Number(document.getElementById("years-input").value) || 1);
+      setRange(years * 365, event.currentTarget);
+    });
+
+    const chart = document.getElementById("chart");
+    new ResizeObserver(() => Plotly.Plots.resize(chart)).observe(chart.parentElement);
+  </script>
+</body>
+</html>
