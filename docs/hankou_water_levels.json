@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-19T20:22:27+08:00",
+  "generated_at": "2026-05-20T10:10:48+08:00",
   "station": "汉口（武汉关）",
   "default_days": 60,
   "records": [
@@ -167,7 +167,183 @@
       "source_title": "2026年5月11日8时水位",
       "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260511_478941.shtml",
       "source_site": "长江航道局水位"
+    },
+    {
+      "datetime": "2026-05-12T16:00:00+08:00",
+      "date": "2026-05-12",
+      "hour": 16,
+      "station": "汉口（武汉关）",
+      "water_level_m": 8.84,
+      "change_m": -0.07,
+      "source_title": "2026年5月12日16时水位",
+      "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260512_479073.shtml",
+      "source_site": "长江航道局水位"
+    },
+    {
+      "datetime": "2026-05-13T08:00:00+08:00",
+      "date": "2026-05-13",
+      "hour": 8,
+      "station": "汉口（武汉关）",
+      "water_level_m": 8.71,
+      "change_m": -0.13,
+      "source_title": "2026年5月13日8时水位",
+      "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260513_479107.shtml",
+      "source_site": "长江航道局水位"
+    },
+    {
+      "datetime": "2026-05-13T16:00:00+08:00",
+      "date": "2026-05-13",
+      "hour": 16,
+      "station": "汉口（武汉关）",
+      "water_level_m": 8.69,
+      "change_m": -0.02,
+      "source_title": "2026年5月13日16时水位",
+      "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260513_479146.shtml",
+      "source_site": "长江航道局水位"
+    },
+    {
+      "datetime": "2026-05-14T08:00:00+08:00",
+      "date": "2026-05-14",
+      "hour": 8,
+      "station": "汉口（武汉关）",
+      "water_level_m": 8.6,
+      "change_m": -0.09,
+      "source_title": "2026年5月14日8时水位",
+      "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260514_479176.shtml",
+      "source_site": "长江航道局水位"
+    },
+    {
+      "datetime": "2026-05-14T16:00:00+08:00",
+      "date": "2026-05-14",
+      "hour": 16,
+      "station": "汉口（武汉关）",
+      "water_level_m": 8.58,
+      "change_m": -0.02,
+      "source_title": "2026年5月14日16时水位",
+      "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260514_479232.shtml",
+      "source_site": "长江航道局水位"
+    },
+    {
+      "datetime": "2026-05-15T08:00:00+08:00",
+      "date": "2026-05-15",
+      "hour": 8,
+      "station": "汉口（武汉关）",
+      "water_level_m": 8.54,
+      "change_m": -0.04,
+      "source_title": "2026年5月15日8时水位",
+      "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260515_479271.shtml",
+      "source_site": "长江航道局水位"
+    },
+    {
+      "datetime": "2026-05-15T16:00:00+08:00",
+      "date": "2026-05-15",
+      "hour": 16,
+      "station": "汉口（武汉关）",
+      "water_level_m": 8.54,
+      "change_m": 0.0,
+      "source_title": "2026年5月15日16时水位",
+      "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260515_479339.shtml",
+      "source_site": "长江航道局水位"
+    },
+    {
+      "datetime": "2026-05-16T08:00:00+08:00",
+      "date": "2026-05-16",
+      "hour": 8,
+      "station": "汉口（武汉关）",
+      "water_level_m": 8.54,
+      "change_m": 0.0,
+      "source_title": "2026年5月16日8时水位",
+      "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260516_479368.shtml",
+      "source_site": "长江航道局水位"
+    },
+    {
+      "datetime": "2026-05-16T16:00:00+08:00",
+      "date": "2026-05-16",
+      "hour": 16,
+      "station": "汉口（武汉关）",
+      "water_level_m": 8.56,
+      "change_m": 0.02,
+      "source_title": "2026年5月16日16时水位",
+      "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260516_479383.shtml",
+      "source_site": "长江航道局水位"
+    },
+    {
+      "datetime": "2026-05-17T08:00:00+08:00",
+      "date": "2026-05-17",
+      "hour": 8,
+      "station": "汉口（武汉关）",
+      "water_level_m": 8.56,
+      "change_m": 0.0,
+      "source_title": "2026年5月17日8时水位",
+      "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260517_479415.shtml",
+      "source_site": "长江航道局水位"
+    },
+    {
+      "datetime": "2026-05-17T16:00:00+08:00",
+      "date": "2026-05-17",
+      "hour": 16,
+      "station": "汉口（武汉关）",
+      "water_level_m": 8.59,
+      "change_m": 0.03,
+      "source_title": "2026年5月17日16时水位",
+      "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260517_479433.shtml",
+      "source_site": "长江航道局水位"
+    },
+    {
+      "datetime": "2026-05-18T08:00:00+08:00",
+      "date": "2026-05-18",
+      "hour": 8,
+      "station": "汉口（武汉关）",
+      "water_level_m": 8.66,
+      "change_m": 0.07,
+      "source_title": "2026年5月18日8时水位",
+      "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260518_479517.shtml",
+      "source_site": "长江航道局水位"
+    },
+    {
+      "datetime": "2026-05-18T16:00:00+08:00",
+      "date": "2026-05-18",
+      "hour": 16,
+      "station": "汉口（武汉关）",
+      "water_level_m": 8.75,
+      "change_m": 0.09,
+      "source_title": "2026年5月18日16时水位",
+      "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260518_479582.shtml",
+      "source_site": "长江航道局水位"
+    },
+    {
+      "datetime": "2026-05-19T08:00:00+08:00",
+      "date": "2026-05-19",
+      "hour": 8,
+      "station": "汉口（武汉关）",
+      "water_level_m": 9.08,
+      "change_m": 0.33,
+      "source_title": "2026年5月19日8时水位",
+      "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260519_479624.shtml",
+      "source_site": "长江航道局水位"
+    },
+    {
+      "datetime": "2026-05-19T16:00:00+08:00",
+      "date": "2026-05-19",
+      "hour": 16,
+      "station": "汉口（武汉关）",
+      "water_level_m": 9.27,
+      "change_m": 0.19,
+      "source_title": "2026年5月19日16时水位",
+      "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260519_479683.shtml",
+      "source_site": "长江航道局水位"
+    },
+    {
+      "datetime": "2026-05-20T08:00:00+08:00",
+      "date": "2026-05-20",
+      "hour": 8,
+      "station": "汉口（武汉关）",
+      "water_level_m": 9.56,
+      "change_m": 0.29,
+      "source_title": "2026年5月20日8时水位",
+      "source_url": "https://www.cjhdj.com.cn/hdfw/sw/202605/t20260520_479720.shtml",
+      "source_site": "长江航道局水位"
     }
   ],
-  "all_record_count": 15
+  "all_record_count": 31
 }
